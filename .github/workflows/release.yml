@@ -1,0 +1,40 @@
+name: Release macOS App
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      # 1. 检出项目代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. 设置 Node.js 版本
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      # 3. 安装项目依赖
+      - name: Install dependencies
+        run: npm install
+
+      # 4. 打包 macOS 应用
+      - name: Build the macOS app
+        run: npm run build
+
+      # 5. 发布应用到 GitHub Releases
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run release
