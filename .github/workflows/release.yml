@@ -3,7 +3,7 @@ name: Release macOS App
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'v4.4.6'
 
 jobs:
   release:
@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.4]
 
     steps:
       # 1. 检出项目代码
